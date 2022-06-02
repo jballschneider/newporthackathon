@@ -8,33 +8,66 @@ runExtension.addEventListener("click", async () => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     function: scanPage,
-  });
+  },
+    (results) => {
+      results.forEach((result) => {
+        const link = document.createElement('div')
+        link.innerHTML = JSON.stringify(result)
+        document.getElementById("links").appendChild(link);
+      })
+    });
 });
 
 
 function scanPage() {
-  console.log('--- running yext extension');
 
-  chrome.storage.sync.get("identifiers", (storedData) => {
-    const identifiers = JSON.parse(storedData.identifiers)
-    console.log('--- using identifiers', identifiers)
+  return new Promise(resolve => {
+    chrome.storage.sync.get("identifiers", (storedData) => {
+      const foundURLs = {};
+      const identifiers = JSON.parse(storedData.identifiers)
+      const links = document.querySelectorAll('link');
+      links.forEach(link => {
+        const {url, foundIdentifier} = checkAndReportUrl(link.href, identifiers);
+        if (!url){
+          return
+        }
+        if (!foundURLs[foundIdentifier]) {
+          foundURLs[foundIdentifier] = [url]
+        } else {
+          foundURLs[foundIdentifier].push(url)
+        }
+      });
 
-    const links = document.querySelectorAll('link');
-    links.forEach(link => checkAndReportUrl(link.href, identifiers));
-
-    const scriptTags = document.querySelectorAll('script')
-    scriptTags.forEach(scriptTag => checkAndReportUrl(scriptTag.src, identifiers));
+      const scriptTags = document.querySelectorAll('script')
+      scriptTags.forEach(scriptTag => {
+        const {url, foundIdentifier} = checkAndReportUrl(scriptTag.src, identifiers);
+        if (!url){
+          return
+        }
+        if (!foundURLs[foundIdentifier]) {
+          foundURLs[foundIdentifier] = [url]
+        } else {
+          foundURLs[foundIdentifier].push(url)
+        }
+      });
+      resolve(foundURLs);
+    });
   });
 
   function checkAndReportUrl(url, identifiers) {
     if (!url) {
-      return
+      return {}
     }
 
-    identifiers.forEach(identifier => {
+    const foundIdentifier = identifiers.find(identifier => {
       if (url.toLowerCase().includes(identifier)) {
-        console.log('found link url: ', url)
+        return identifier
       }
     });
+
+    if (foundIdentifier) {
+      return {url, foundIdentifier}
+    }
+    return {}
   }
 }
