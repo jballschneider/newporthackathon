@@ -23,7 +23,7 @@ resetButton.addEventListener('click', () => {
 })
 
 input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
+  if (e.key === 'Enter' && e.target.value) {
     appendListItem(e.target.value)
     input.value = ''
     updateIdentifiersInStorage();
