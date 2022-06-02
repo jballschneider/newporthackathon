@@ -1,10 +1,25 @@
 button {
-  height: 30px;
-  width: 30px;
+  height: auto;
+  width: auto;
   outline: none;
   margin: 10px;
   border: none;
-  border-radius: 2px;
+  border-radius: 10px;
   cursor: pointer;
-  background-color: aquamarine;
+  background-color: rgb(15, 112, 240);
+  color: white;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: 18px;
+  white-space: nowrap;
+  padding: 10px;
+  margin-left: 5px
+}
+
+h3 {
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: 18px;
+  white-space: nowrap;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 5px
 }
