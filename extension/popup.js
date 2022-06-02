@@ -70,7 +70,7 @@ function scanPage() {
     if (!url) {
       return {}
     }
-    const formattedURL = new URL(url).href.toLowerCase();
+    const formattedURL = url.split('?')[0].toLowerCase();
 
     const foundIdentifier = identifiers.find(identifier => {
       if (formattedURL.includes(identifier.toLowerCase())) {
