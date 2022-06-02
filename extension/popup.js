@@ -58,15 +58,16 @@ function scanPage() {
     if (!url) {
       return {}
     }
+    const formattedURL = new URL(url).href.toLowerCase();
 
     const foundIdentifier = identifiers.find(identifier => {
-      if (url.toLowerCase().includes(identifier)) {
+      if (formattedURL.includes(identifier.toLowerCase())) {
         return identifier
       }
     });
 
     if (foundIdentifier) {
-      return {url, foundIdentifier}
+      return { url, foundIdentifier }
     }
     return {}
   }
