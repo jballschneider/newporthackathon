@@ -10,6 +10,7 @@ runExtension.addEventListener("click", async () => {
   //featuredResults = [];
 
   document.getElementById("prettyResultsContainer").innerHTML = "";
+  document.getElementById("links").innerHTML = "";
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
