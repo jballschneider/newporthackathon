@@ -1,0 +1,6 @@
+{
+    "name": "Yext SaaS Integration Spotter",
+    "description": "Identifies common SaaS integrations on the current page.",
+    "version": "1.0",
+    "manifest_version": 3
+  }
