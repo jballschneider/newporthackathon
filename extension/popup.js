@@ -1,9 +1,15 @@
 // Initialize button with user's preferred color
 let runExtension = document.getElementById("runExtension");
 
+let featuredResults = [];
+
 // When the button is clicked, inject setPageBackgroundColor into current page
 runExtension.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  //featuredResults = [];
+
+  document.getElementById("prettyResultsContainer").innerHTML = "";
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
@@ -12,8 +18,14 @@ runExtension.addEventListener("click", async () => {
     (results) => {
       results.forEach((result) => {
         const link = document.createElement('div')
-        link.innerHTML = JSON.stringify(result)
+        link.innerHTML = JSON.stringify(result.result)
         document.getElementById("links").appendChild(link);
+        Object.entries(result.result).forEach(([identifier, urlArray]) => {
+            const resultEl = document.createElement('div');
+            resultEl.innerHTML = `<strong>${identifier}</strong>: ${urlArray[0]}`;
+            document.getElementById("prettyResultsContainer").appendChild(resultEl);
+        });
+        //prettyResultsContainer.getElementsById('prettyResultsContainer');
       })
     });
 });
