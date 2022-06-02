@@ -2,5 +2,9 @@
     "name": "Yext SaaS Integration Spotter",
     "description": "Identifies common SaaS integrations on the current page.",
     "version": "1.0",
+    "permissions": ["activeTab"],
+    "action": {
+      "default_popup": "popup.html"
+    },
     "manifest_version": 3
   }
